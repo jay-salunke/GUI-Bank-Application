@@ -1,8 +1,8 @@
 import javax.swing.*;
-import javax.swing.Timer;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
+import java.util.Timer;
 
 public class LoginForm{
     private JFrame LoginFrame;
@@ -12,11 +12,13 @@ public class LoginForm{
     private JTextField LoginText1;
     private JTextField LoginText2;
     private JCheckBox  LoginRemCheck;
+    private JLabel ForgotPasswordLink;
+    private JLabel SignUpAccount;
     private String email="abc";
     private String pass="abc";
-    private JLabel seconds;
+
     private int count=0;
-    private int SecondsPassed=60;
+
 
     public void LoginCheck(String email,String pass){
       boolean giveAccess=false;
@@ -33,24 +35,11 @@ public class LoginForm{
 
               if(count==3){
 
-                  JOptionPane.showMessageDialog(null,"Too Many Failed Attempts Please try again after 60 seconds");
-                  LoginButton.setEnabled(false);
-                  Timer t=new Timer(1000, new ActionListener() {
-                      @Override
-                      public void actionPerformed(ActionEvent e) {
-                          --SecondsPassed;
-                          seconds.setVisible(true);
-                          seconds.setBounds(190,190,100,100);
-                          seconds.setText("00:"+String.valueOf(SecondsPassed));
-                          System.out.println("00:"+String.valueOf(SecondsPassed));
-
-
-                      }
-                  });
-
-                  t.start();
-
-
+                //  JOptionPane.showMessageDialog(null,"Too Many Failed Attempts Please try again after 60 seconds");
+                  ForgotPasswordLink.setBounds(200,240,100,20);
+                  ForgotPasswordLink.setForeground(Color.BLUE);
+                  ForgotPasswordLink.setVisible(true);
+                  SignUpAccount.setVisible(false);
 
               }
               else
@@ -91,10 +80,27 @@ public class LoginForm{
 
          //Login Button
           LoginButton=new JButton("Login");
-          LoginButton.setBounds(190,150,100,30);
+          LoginButton.setBounds(140,150,220,30);
 
-        //Seconds label
-          seconds=new JLabel();
+          //SignUp Account
+         SignUpAccount=new JLabel("OR Create Account");
+         SignUpAccount.setBounds(200,190,110,50);
+         SignUpAccount.setForeground(Color.orange);
+          // Forgot Password Link
+        ForgotPasswordLink=new JLabel("Forget Password");
+        ForgotPasswordLink.setBounds(200,220,100,20);
+        ForgotPasswordLink.setForeground(Color.BLUE);
+
+          SignUpAccount.addMouseListener(new MouseAdapter() {
+              @Override
+              public void mouseClicked(MouseEvent e) {
+                    new SignupForm();
+                    LoginFrame.setVisible(false);
+              }
+
+          });
+
+
 
           LoginButton.addActionListener(new ActionListener() {
 
@@ -115,6 +121,8 @@ public class LoginForm{
         LoginFrame.add(LoginText1);
         LoginFrame.add(LoginText2);
         LoginFrame.add(LoginButton);
+        LoginFrame.add(SignUpAccount);
+        LoginFrame.add(ForgotPasswordLink);
         LoginFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         LoginFrame.setResizable(false);
         LoginFrame.setSize(500,400);
