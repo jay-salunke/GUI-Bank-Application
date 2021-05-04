@@ -1,10 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import java.util.Timer;
-
-public class LoginForm{
+import java.sql.*;
+public class LoginForm extends JDBCConnection{
     private JFrame LoginFrame;
     private JButton LoginButton;
     private JLabel LoginLabel1;
@@ -20,41 +18,51 @@ public class LoginForm{
     private int count=0;
 
 
-    public void LoginCheck(String email,String pass){
-      boolean giveAccess=false;
-      if(email.isEmpty() || pass.isEmpty()){
-          JOptionPane.showMessageDialog(null,"Please fill the fields");
-      }
+    public void LoginCheck(String email,String pass) {
+        boolean giveAccess = false;
+        if (email.isEmpty() || pass.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Field cannot be empty....");
+        } else {
 
-          if(this.email.equals(email) && this.pass.equals(pass)){
-               JOptionPane.showMessageDialog(null,"Login Successfully done");
-               giveAccess=true;
-          }
-          else
-          {
+            try {
+                String DB_EmailID = null;
+                String DB_Password = null;
+                String DB_Name = null;
+                Class.forName(Driver);
+                Connection con = DriverManager.getConnection(DB_URL, DB_Username, DB_pass);
+                Statement stmt = con.createStatement();
+                String query = "SELECT Name,EmailID,Password FROM `usersinfo` WHERE `EmailID` ='" + email + "' AND `Password` ='" + pass + "'";
+                ResultSet rs = stmt.executeQuery(query);
+                while (rs.next()) {
+                    DB_Name = rs.getString("Name");
+                    DB_EmailID = rs.getString("EmailID");
+                    DB_Password = rs.getString("Password");
+                }
+                if (DB_EmailID.equals(email) && DB_Password.equals(pass)) {
+                    JOptionPane.showMessageDialog(null, "Dear" + DB_Name + " you have login successfully in your account");
+                    giveAccess = true;
 
-              if(count==3){
+                }
 
-                //  JOptionPane.showMessageDialog(null,"Too Many Failed Attempts Please try again after 60 seconds");
-                  ForgotPasswordLink.setBounds(200,240,100,20);
-                  ForgotPasswordLink.setForeground(Color.BLUE);
-                  ForgotPasswordLink.setVisible(true);
-                  SignUpAccount.setVisible(false);
+            } catch (Exception ex) {
+                System.out.println(ex);
 
-              }
-              else
-              {
-                  ++count;
-                  JOptionPane.showMessageDialog(null,"Password or Email Id is incorrect");
-              }
-          }
+            }
+            if (giveAccess) {
+
+                new UserForm();
+            } else {
+                JOptionPane.showMessageDialog(null, "Email or Password is incorrect");
+                LoginText1.setText(null);
+                LoginText2.setText(null);
+            }
 
 
-      if(giveAccess){
-          LoginFrame.setVisible(false);
-          new UserForm();
-      }
-  }
+        }
+    }
+
+
+
 
 
 
@@ -111,9 +119,6 @@ public class LoginForm{
                    LoginCheck(email,pass);
               }
           });
-
-          //Timer Label
-
 
         //Adding all components in frame
         LoginFrame.add(LoginLabel1);
