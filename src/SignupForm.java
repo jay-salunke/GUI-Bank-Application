@@ -36,10 +36,6 @@ public class SignupForm extends JFrame {
 
     private JLabel NameValidation;
 
-    private void NameFieldValidation(String getName) {
-        System.out.print(getName);
-    }
-
     private boolean Success = false;
 
     public void ResetAll() {
@@ -72,8 +68,6 @@ public class SignupForm extends JFrame {
         TextField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                String NameField = TextField1.getText();
-                NameFieldValidation(NameField);
                 NameValidation.setForeground(Color.red);
 
                 if (TextField1.getText().isEmpty()) {
@@ -286,7 +280,7 @@ public class SignupForm extends JFrame {
                     if (name.isEmpty() || phone.isEmpty() || email.isEmpty() || pass.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Field cannot be empty");
                     } else {
-                        System.out.println(name);
+//                        System.out.println(name);
                         System.out.println(phone);
                         System.out.println(email);
                         System.out.println(pass);
