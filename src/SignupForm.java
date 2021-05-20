@@ -143,8 +143,8 @@ public class SignupForm extends JFrame {
         PhoneValidation.setBounds(245, 110, 160, 20);
 
         //label4
-        label4 = new JLabel("STATE: ");
-        label4.setBounds(40, 130, 50, 20);
+        label4 = new JLabel("OCCUPATION: ");
+        label4.setBounds(40, 130, 160, 20);
 
         //TextField4
         TextField4 = new JTextField();
@@ -267,16 +267,16 @@ public class SignupForm extends JFrame {
         PasswordField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                  if(PasswordField2.getPassword().length == 0){
-                      PasswordValidation.setText("Please fill the password field");
-                  }else{ PasswordValidation.setText(""); Success = true;}
-
-                for (int i = 0; i < PasswordField1.getPassword().length; i++) {
-                    if ((Arrays.equals(PasswordField1.getPassword(), PasswordField2.getPassword()))) {
-                        PasswordValidation.setText("");
-                        Success = true;
-                    }else PasswordValidation.setText("Password doesn't match!");
+                PasswordValidation.setForeground(Color.red);
+                if (PasswordField1.getPassword().length == 0) {
+                    PasswordValidation.setText("Please fill the password field");
+                } else if (PasswordField1.getPassword().length < 8) {
+                    PasswordValidation.setText("Please Enter Strong password");
+                } else {
+                    PasswordValidation.setText("");
+                    Success = true;
                 }
+
             }
         });
 
@@ -293,9 +293,12 @@ public class SignupForm extends JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 ConfirmPassValidation.setForeground(Color.red);
-                if(PasswordField2.getPassword().length == 0){
-                    ConfirmPassValidation.setText("Please fill the Confirm password field");
-                }else{ ConfirmPassValidation.setText(""); Success = true;}
+                if (PasswordField2.getPassword().length == 0) {
+                    ConfirmPassValidation.setText("Please Confirm password ");
+                } else {
+                    ConfirmPassValidation.setText("");
+                    Success = true;
+                }
                 for (int i = 0; i < PasswordField2.getPassword().length; i++) {
                     if ((Arrays.equals(PasswordField2.getPassword(), PasswordField1.getPassword()))) {
                         ConfirmPassValidation.setText("");
@@ -382,13 +385,14 @@ public class SignupForm extends JFrame {
         add(TextField8);
         add(label9);
         add(PasswordField1);
+        add(PasswordValidation);
         add(label10);
         add(PasswordField2);
         add(ConfirmPassValidation);
         add(SubmitButton);
         add(ResetButton);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(450, 500);
+        setSize(433, 500);
         setLayout(null);
         setResizable(false);
         setLayout(null);
