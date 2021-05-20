@@ -1,4 +1,6 @@
 
+import com.toedter.calendar.JDateChooser;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -37,6 +39,8 @@ public class SignupForm extends JFrame {
     private JLabel InitialAmountValidation;
     private JLabel PasswordValidation;
     private JLabel ConfirmPassValidation;
+    private JDateChooser Date;
+
     private String RegexEmail = "([a-z\\d\\.-]+)@([a-z\\d-]+)\\.([a-z]{2,3})(\\.[a-z]{2,3})?";
 
 
@@ -47,7 +51,7 @@ public class SignupForm extends JFrame {
         TextField2.setText(null);
         TextField3.setText(null);
         TextField4.setText(null);
-        TextField5.setText(null);
+        Date.setDate(null);
         TextField6.setText(null);
         TextField7.setText(null);
         TextField8.setText(null);
@@ -152,8 +156,8 @@ public class SignupForm extends JFrame {
         label5.setBounds(40, 170, 50, 20);
 
         //TextField5
-        TextField5 = new JTextField();
-        TextField5.setBounds(40, 189, 200, 20);
+        Date = new JDateChooser();
+        Date.setBounds(40, 189, 200, 20);
 
 
         //label6
@@ -367,7 +371,7 @@ public class SignupForm extends JFrame {
         add(TextField4);
         add(PhoneValidation);
         add(label5);
-        add(TextField5);
+        add(Date);
         add(label6);
         add(TextField6);
         add(PincodeValidation);
