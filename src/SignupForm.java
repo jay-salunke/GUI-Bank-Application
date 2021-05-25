@@ -23,6 +23,8 @@ public class SignupForm extends JFrame {
     private JTextField TextField1;
     private JTextField TextField2;
     private JTextField TextField3;
+
+    //TextField4
     private JTextField TextField4;
     private JTextField TextField5;
     private JTextField TextField6;
@@ -39,15 +41,151 @@ public class SignupForm extends JFrame {
     private JLabel InitialAmountValidation;
     private JLabel PasswordValidation;
     private JLabel ConfirmPassValidation;
-    private JDateChooser Date;
+     private JDateChooser Date;
+    private boolean Success = true;
+
+
+    private boolean isEmptyCheck(){
+        if(TextField1.getText().isEmpty())Success = false;
+       else if(TextField3.getText().isEmpty()) Success = false;
+       else if(TextField6.getText().isEmpty())Success = false;
+       else if(TextField7.getText().isEmpty())Success = false;
+       else if(PasswordField1.getPassword().length == 0)Success = false;
+       else if(PasswordField2.getPassword().length == 0)Success = false;
+       else Success = true;
+       return Success;
+    }
+    private boolean CheckValidations() {
+        if (NameErrorLabel()) Success = true;
+        else if (PhoneErrorLabel()) Success = true;
+        else if (PincodeErrorLabel()) Success = true;
+        else if(EmailErrorLabel()) Success = true;
+        else if(PasswordErrorLabel())Success = true;
+        else if(ConfirmPasswordErrorLabel())Success = true;
+        else Success = false;
+        return Success;
+    }
+
+    private boolean NameErrorLabel() {
+        NameValidation.setForeground(Color.red);
+
+        if (TextField1.getText().isEmpty()) {
+            NameValidation.setText("Name Field is Empty");
+            Success = false;
+        } else if (!TextField1.getText().matches("([^0-9]*)")) {
+            NameValidation.setText("Numbers are not valid");
+            Success = false;
+        } else if (!TextField1.getText().matches("([A-z a-z]+)")) {
+            NameValidation.setText("Please Enter Name Correctly");
+            Success = false;
+        } else {
+            NameValidation.setText("");
+           //  Success  =true;
+        }
+
+        return Success;
+    }
+
+    private boolean PhoneErrorLabel() {
+
+        PhoneValidation.setForeground(Color.red);
+        if (TextField3.getText().isEmpty()) {
+            PhoneValidation.setText("Phone Field Cannot be Empty");
+            Success = false;
+        } else if (!TextField3.getText().matches("^[0-9]*$")) {
+            PhoneValidation.setText("Please Enter Digits only");
+            Success = false;
+        } else if (!(TextField3.getText().length() == 10)) {
+            PhoneValidation.setText("Please Enter 10 digits number only");
+            Success = false;
+        } else {
+            PhoneValidation.setText("");
+             // Success  =true;
+        }
+
+        return Success;
+    }
+
+    private boolean PincodeErrorLabel() {
+        PincodeValidation.setForeground(Color.red);
+        if (TextField6.getText().isEmpty()) {
+            PincodeValidation.setText("Please Fill the Pincode");
+            Success = false;
+        } else if (!TextField6.getText().matches("^[0-9]*$")) {
+            PincodeValidation.setText("Please Enter Digits only");
+            Success = false;
+        } else if (!(TextField6.getText().length() == 6)) {
+            PincodeValidation.setText("Pincode should be 6 digit number only");
+            Success = false;
+        } else {
+            PincodeValidation.setText("");
+             //Success = true;
+
+        }
+        return Success;
+    }
+    private boolean EmailErrorLabel() {
+        EmailIDValidation.setForeground(Color.red);
+        if (TextField7.getText().isEmpty()) {
+            EmailIDValidation.setText("Email Id cannot be empty");
+            Success = false;
+        } else if (!TextField7.getText().matches(RegexEmail)) {
+            Success = false;
+            EmailIDValidation.setText("Enter valid Email Id");
+        } else {
+            EmailIDValidation.setText("");
+             // Success = true;
+        }
+        return Success;
+    }
+    private boolean PasswordErrorLabel(){
+        PasswordValidation.setForeground(Color.red);
+        if (PasswordField1.getPassword().length == 0) {
+            PasswordValidation.setText("Please fill the password field");
+            Success = false;
+        } else if (PasswordField1.getPassword().length < 8) {
+            PasswordValidation.setText("Please Enter Strong password");
+            Success = false;
+        } else {
+            PasswordValidation.setText("");
+
+        }
+
+        return Success;
+    }
+
+    private boolean ConfirmPasswordErrorLabel(){
+        ConfirmPassValidation.setForeground(Color.red);
+        if (PasswordField2.getPassword().length == 0) {
+            ConfirmPassValidation.setText("Please Confirm password ");
+            Success = false;
+        } else {
+            ConfirmPassValidation.setText("");
+
+        }
+        for (int i = 0; i < PasswordField2.getPassword().length; i++) {
+            if ((Arrays.equals(PasswordField2.getPassword(), PasswordField1.getPassword()))) {
+                ConfirmPassValidation.setText("");
+
+
+            } else {
+                ConfirmPassValidation.setText("Password Doesnt Match");
+                Success = false;
+            }
+        }
+
+        return  Success;
+    }
+
+
 
     private String RegexEmail = "([a-z\\d\\.-]+)@([a-z\\d-]+)\\.([a-z]{2,3})(\\.[a-z]{2,3})?";
 
 
-    private boolean Success = false;
 
     public void ResetAll() {
         TextField1.setText(null);
+        NameValidation.setText(null);
         TextField2.setText(null);
         TextField3.setText(null);
         TextField4.setText(null);
@@ -57,13 +195,13 @@ public class SignupForm extends JFrame {
         TextField8.setText(null);
         PasswordField1.setText(null);
         PasswordField2.setText(null);
-        NameValidation.setText(null);
         PhoneValidation.setText(null);
         PincodeValidation.setText(null);
         EmailIDValidation.setText(null);
         PasswordValidation.setText(null);
         ConfirmPassValidation.setText(null);
         InitialAmountValidation.setText(null);
+         Success = false;
     }
 
 
@@ -79,25 +217,12 @@ public class SignupForm extends JFrame {
         TextField1.setBounds(40, 25, 200, 20);
         NameValidation = new JLabel();
         NameValidation.setBounds(255, 25, 200, 20);
+
         TextField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                NameValidation.setForeground(Color.red);
-
-                if (TextField1.getText().isEmpty()) {
-                    NameValidation.setText("Name Field is Empty");
-
-                } else if (!TextField1.getText().matches("([^0-9]*)")) {
-                    NameValidation.setText("Numbers are not valid");
-                    Success = false;
-                } else if (!TextField1.getText().matches("([A-z a-z]+)")) {
-                    NameValidation.setText("Please Enter Name Correctly");
-                    Success = false;
-                } else {
-                    NameValidation.setText("");
-                    Success = true;
-                }
-
+                String text1 = TextField1.getText();
+                NameErrorLabel();
             }
         });
         //label2
@@ -122,20 +247,7 @@ public class SignupForm extends JFrame {
         TextField3.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-
-                PhoneValidation.setForeground(Color.red);
-                if (TextField3.getText().isEmpty()) {
-                    PhoneValidation.setText("Phone Field Cannot be Empty");
-                } else if (!TextField3.getText().matches("^[0-9]*$")) {
-                    PhoneValidation.setText("Please Enter Digits only");
-                    Success = false;
-                } else if (!(TextField3.getText().length() == 10)) {
-                    PhoneValidation.setText("Please Enter 10 digits number only");
-                    Success = false;
-                } else {
-                    PhoneValidation.setText("");
-                    Success = true;
-                }
+                PhoneErrorLabel();
             }
         });
 
@@ -145,8 +257,6 @@ public class SignupForm extends JFrame {
         //label4
         label4 = new JLabel("OCCUPATION: ");
         label4.setBounds(40, 130, 160, 20);
-
-        //TextField4
         TextField4 = new JTextField();
         TextField4.setBounds(40, 150, 200, 20);
 
@@ -155,7 +265,7 @@ public class SignupForm extends JFrame {
         label5 = new JLabel("DOB: ");
         label5.setBounds(40, 170, 50, 20);
 
-        //TextField5
+        //Date
         Date = new JDateChooser();
         Date.setBounds(40, 189, 200, 20);
 
@@ -171,21 +281,7 @@ public class SignupForm extends JFrame {
         TextField6.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                PincodeValidation.setForeground(Color.red);
-                if (TextField6.getText().isEmpty()) {
-                    PincodeValidation.setText("Please Fill the Pincode");
-                    Success = false;
-                } else if (!TextField6.getText().matches("^[0-9]*$")) {
-                    PincodeValidation.setText("Please Enter Digits only");
-                    Success = false;
-                } else if (!(TextField6.getText().length() == 6)) {
-                    PincodeValidation.setText("Pincode should be 6 digit number only");
-                    Success = false;
-                } else {
-                    PincodeValidation.setText("");
-                    Success = true;
-                }
-
+                PincodeErrorLabel();
             }
         });
 
@@ -207,18 +303,7 @@ public class SignupForm extends JFrame {
         TextField7.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                EmailIDValidation.setForeground(Color.red);
-                if (TextField7.getText().isEmpty()) {
-                    EmailIDValidation.setText("Email Id cannot be empty");
-                    Success = false;
-                } else if (!TextField7.getText().matches(RegexEmail)) {
-                    Success = false;
-                    EmailIDValidation.setText("Enter valid Email Id");
-                } else {
-                    Success = true;
-                    EmailIDValidation.setText("");
-
-                }
+                   EmailErrorLabel();
             }
         });
 
@@ -237,17 +322,21 @@ public class SignupForm extends JFrame {
         TextField8.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                if (TextField8.getText().isEmpty()) {
-                    InitialAmountValidation.setText("Please Enter the Amount");
-                } else if (!(TextField8.getText().matches("^[0-9]*$"))) {
-                    InitialAmountValidation.setText("Please fill Digits only");
-                } else if (Integer.parseInt(TextField8.getText()) < 5000) {
-                    InitialAmountValidation.setText("Enter the Amount greater than 5000");
 
-                } else {
-                    InitialAmountValidation.setText("");
-                    Success = true;
-                }
+
+//                if (TextField8.getText().isEmpty()) {
+//                    InitialAmountValidation.setText("Please Enter the Amount");
+//                    Success = false;
+//                } else if (!(TextField8.getText().matches("^[0-9]*$"))) {
+//                    InitialAmountValidation.setText("Please fill Digits only");
+//                    Success = false;
+//                } else if (Integer.parseInt(TextField8.getText()) < 5000) {
+//                    InitialAmountValidation.setText("Enter the Amount greater than 5000");
+//                    Success = false;
+//                } else {
+//                    InitialAmountValidation.setText("");
+//
+//                }
 
             }
         });
@@ -267,15 +356,7 @@ public class SignupForm extends JFrame {
         PasswordField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                PasswordValidation.setForeground(Color.red);
-                if (PasswordField1.getPassword().length == 0) {
-                    PasswordValidation.setText("Please fill the password field");
-                } else if (PasswordField1.getPassword().length < 8) {
-                    PasswordValidation.setText("Please Enter Strong password");
-                } else {
-                    PasswordValidation.setText("");
-                    Success = true;
-                }
+                PasswordErrorLabel();
 
             }
         });
@@ -292,22 +373,7 @@ public class SignupForm extends JFrame {
         PasswordField2.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                ConfirmPassValidation.setForeground(Color.red);
-                if (PasswordField2.getPassword().length == 0) {
-                    ConfirmPassValidation.setText("Please Confirm password ");
-                } else {
-                    ConfirmPassValidation.setText("");
-                    Success = true;
-                }
-                for (int i = 0; i < PasswordField2.getPassword().length; i++) {
-                    if ((Arrays.equals(PasswordField2.getPassword(), PasswordField1.getPassword()))) {
-                        ConfirmPassValidation.setText("");
-                        Success = true;
-
-                    } else ConfirmPassValidation.setText("Password Doesnt Match");
-
-                }
-
+                ConfirmPasswordErrorLabel();
             }
         });
 
@@ -322,36 +388,19 @@ public class SignupForm extends JFrame {
         SubmitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String name = TextField1.getText();
-                String phone = TextField3.getText();
-                String email = TextField7.getText();
-                String pass = PasswordField1.getPassword().toString();
 
-                if (!Success) {
-                    if ((name.isEmpty() && phone.isEmpty() && email.isEmpty() && pass.isEmpty())) {
-                        JOptionPane.showMessageDialog(null, "Please Fill all the field");
-                    }
-
-
-                } else {
-
-                    if (name.isEmpty() || phone.isEmpty() || email.isEmpty() || pass.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Field cannot be empty");
-                    } else {
-//                        System.out.println(name);
-                        System.out.println(phone);
-                        System.out.println(email);
-                        System.out.println(pass);
-
-                        new UserForm();
-                        setVisible(false);
-
-
-                    }
+                   CheckValidations();
+                  if(isEmptyCheck()){
+                    System.out.println("NotEmpty");
                 }
+                else{
+                    System.out.println("Empty");
+                }
+
 
             }
         });
+
 
         //ResetButton
         ResetButton = new JButton("RESET");
