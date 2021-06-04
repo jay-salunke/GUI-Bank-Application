@@ -10,13 +10,9 @@ public class LoginForm extends JDBCConnection{
     private JTextField LoginText1;
     private JTextField LoginText2;
     private JCheckBox  LoginRemCheck;
-    private JLabel ForgotPasswordLink;
-    private JLabel SignUpAccount;
-    private String email="abc";
-    private String pass="abc";
-
-    private int count=0;
-
+    private JButton ForgotPassword;
+    private JButton SignUpAccount;
+    private JPanel panel;
 
     public void LoginCheck(String email,String pass) {
         boolean giveAccess = false;
@@ -51,6 +47,7 @@ public class LoginForm extends JDBCConnection{
             if (giveAccess) {
 
                 new UserForm();
+                LoginFrame.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null, "Email or Password is incorrect");
                 LoginText1.setText(null);
@@ -71,42 +68,52 @@ public class LoginForm extends JDBCConnection{
 
     LoginForm(){
 
-        LoginFrame=new JFrame("LOGIN FORM");
 
+        LoginFrame=new JFrame("LOGIN FORM");
+        panel = new JPanel();
+        panel.setBounds(15,15,340,300);
+        panel.setBackground(Color.white);
         //label 1
         LoginLabel1=new JLabel("Email Id: ");
-        LoginLabel1.setBounds(85,70,100,20);
+        LoginLabel1.setBounds(70,45,100,20);
          //TextBox1 (Email ID)
         LoginText1=new JTextField();
-        LoginText1.setBounds(140,70,220,25);
+        LoginText1.setBounds(70,65,220,25);
         //label 2
         LoginLabel2=new JLabel("Password: ");
-        LoginLabel2.setBounds(75,110,100,20);
+        LoginLabel2.setBounds(70,100,100,20);
          //TextBox2 (Password)
         LoginText2=new JTextField();
-        LoginText2.setBounds(140,110,220,25);
+        LoginText2.setBounds(70,120,220,25);
 
          //Login Button
           LoginButton=new JButton("Login");
-          LoginButton.setBounds(140,150,220,30);
+          LoginButton.setBounds(70,160,220,25);
 
           //SignUp Account
-         SignUpAccount=new JLabel("OR Create Account");
-         SignUpAccount.setBounds(200,190,110,50);
+         SignUpAccount=new JButton("Create Account");
+         SignUpAccount.setBounds(70,200,220,25);
          SignUpAccount.setForeground(Color.orange);
           // Forgot Password Link
-        ForgotPasswordLink=new JLabel("Forget Password");
-        ForgotPasswordLink.setBounds(200,220,100,20);
-        ForgotPasswordLink.setForeground(Color.BLUE);
+        ForgotPassword=new JButton("Forget Password");
+        ForgotPassword.setBounds(70,240,220,25);
+        ForgotPassword.setForeground(Color.BLUE);
 
-          SignUpAccount.addMouseListener(new MouseAdapter() {
-              @Override
-              public void mouseClicked(MouseEvent e) {
-                    new SignupForm();
-                    LoginFrame.setVisible(false);
-              }
+        SignUpAccount.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SignupForm();
+                LoginFrame.setVisible(false);
+            }
+        });
 
-          });
+        ForgotPassword.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ForgotPassword();
+                LoginFrame.setVisible(false);
+            }
+        });
 
 
 
@@ -127,10 +134,11 @@ public class LoginForm extends JDBCConnection{
         LoginFrame.add(LoginText2);
         LoginFrame.add(LoginButton);
         LoginFrame.add(SignUpAccount);
-        LoginFrame.add(ForgotPasswordLink);
+        LoginFrame.add(ForgotPassword);
+        LoginFrame.add(panel);
         LoginFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         LoginFrame.setResizable(false);
-        LoginFrame.setSize(500,400);
+        LoginFrame.setSize(375,370);
         LoginFrame.setLayout(null);
         LoginFrame.setVisible(true);
 

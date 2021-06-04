@@ -1,10 +1,7 @@
 
 import com.toedter.calendar.JDateChooser;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
@@ -35,38 +32,45 @@ public class SignupForm extends JFrame {
     private JButton SubmitButton;
     private JButton ResetButton;
     private JLabel NameValidation;
+    private JLabel AddressValidation;
     private JLabel PhoneValidation;
+    private JLabel OccupationValidation;
+    private JLabel DateValidation;
     private JLabel PincodeValidation;
     private JLabel EmailIDValidation;
     private JLabel InitialAmountValidation;
     private JLabel PasswordValidation;
     private JLabel ConfirmPassValidation;
-     private JDateChooser Date;
+    private JDateChooser Date;
     private boolean Success = true;
-
-
-    private boolean isEmptyCheck(){
-        if(TextField1.getText().isEmpty())Success = false;
-       else if(TextField3.getText().isEmpty()) Success = false;
-       else if(TextField6.getText().isEmpty())Success = false;
-       else if(TextField7.getText().isEmpty())Success = false;
-       else if(PasswordField1.getPassword().length == 0)Success = false;
-       else if(PasswordField2.getPassword().length == 0)Success = false;
-       else Success = true;
-       return Success;
-    }
-    private boolean CheckValidations() {
-        if (NameErrorLabel()) Success = true;
-        else if (PhoneErrorLabel()) Success = true;
-        else if (PincodeErrorLabel()) Success = true;
-        else if(EmailErrorLabel()) Success = true;
-        else if(PasswordErrorLabel())Success = true;
-        else if(ConfirmPasswordErrorLabel())Success = true;
-        else Success = false;
-        return Success;
+    private String RegexEmail = "([a-z\\d\\.-]+)@([a-z\\d-]+)\\.([a-z]{2,3})(\\.[a-z]{2,3})?";
+    public void CheckTextBoxEmpty() {
+        if (TextField1.getText().isEmpty()) Success = false;
+        if (TextField2.getText().isEmpty()) Success = false;
+        if (TextField3.getText().isEmpty()) Success = false;
+        if (TextField4.getText().isEmpty()) Success = false;
+        if (TextField6.getText().isEmpty()) Success = false;
+        if (TextField7.getText().isEmpty()) Success = false;
+        if(!TextField7.getText().matches(RegexEmail))Success = false;
+        if (TextField8.getText() == "0")Success = false;
+        if (PasswordField1.getPassword().length == 0) Success = false;
+        if (PasswordField2.getPassword().length == 0) Success = false;
     }
 
-    private boolean NameErrorLabel() {
+    private void SignUpFormValidations() {
+        ValidateName();
+        ValidateAddress();
+        ValidatePhone();
+        ValidateOccupation();
+        ValidatePinCode();
+        ValidateEmail();
+        ValidateInitialAmount();
+        ValidatePassword();
+        ValidateConfirmPassword();
+
+    }
+
+    private void ValidateName() {
         NameValidation.setForeground(Color.red);
 
         if (TextField1.getText().isEmpty()) {
@@ -80,13 +84,25 @@ public class SignupForm extends JFrame {
             Success = false;
         } else {
             NameValidation.setText("");
-           //  Success  =true;
+            Success = true;
         }
 
-        return Success;
+
     }
 
-    private boolean PhoneErrorLabel() {
+    private void ValidateAddress() {
+        AddressValidation.setForeground(Color.red);
+        if (TextField2.getText().isEmpty()) {
+            AddressValidation.setText("Address Field is Empty");
+            Success = false;
+        } else {
+            AddressValidation.setText("");
+            Success = true;
+        }
+
+    }
+
+    private void ValidatePhone() {
 
         PhoneValidation.setForeground(Color.red);
         if (TextField3.getText().isEmpty()) {
@@ -100,13 +116,23 @@ public class SignupForm extends JFrame {
             Success = false;
         } else {
             PhoneValidation.setText("");
-             // Success  =true;
+
         }
 
-        return Success;
     }
 
-    private boolean PincodeErrorLabel() {
+    private void ValidateOccupation() {
+        OccupationValidation.setForeground(Color.red);
+        if (TextField4.getText().isEmpty()) {
+            OccupationValidation.setText("Please fill Occuption Field");
+            Success = false;
+        } else {
+            OccupationValidation.setText("");
+            Success = true;
+        }
+    }
+
+    private void ValidatePinCode() {
         PincodeValidation.setForeground(Color.red);
         if (TextField6.getText().isEmpty()) {
             PincodeValidation.setText("Please Fill the Pincode");
@@ -119,26 +145,52 @@ public class SignupForm extends JFrame {
             Success = false;
         } else {
             PincodeValidation.setText("");
-             //Success = true;
+            Success = true;
 
         }
-        return Success;
+
     }
-    private boolean EmailErrorLabel() {
+
+    private void ValidateEmail() {
         EmailIDValidation.setForeground(Color.red);
         if (TextField7.getText().isEmpty()) {
             EmailIDValidation.setText("Email Id cannot be empty");
             Success = false;
         } else if (!TextField7.getText().matches(RegexEmail)) {
-            Success = false;
             EmailIDValidation.setText("Enter valid Email Id");
+            Success = false;
         } else {
             EmailIDValidation.setText("");
-             // Success = true;
+            // Success = true;
         }
-        return Success;
+
     }
-    private boolean PasswordErrorLabel(){
+
+    private void ValidateInitialAmount() {
+        InitialAmountValidation.setForeground(Color.red);
+        int Amount = Integer.parseInt(TextField8.getText());
+
+          if(Amount ==0){
+            InitialAmountValidation.setText("Enter the Amount");
+            Success =  false;
+        }
+         else if(Amount <0){
+             InitialAmountValidation.setText("Please enter correct Amount");
+             Success = false;
+         }
+         else if(Amount<1500){
+            InitialAmountValidation.setText("Please enter minimum 1500/- cash");
+             Success = false;
+        }
+        else{
+            InitialAmountValidation.setText("");
+             Success = true;
+        }
+
+
+    }
+
+    private void ValidatePassword() {
         PasswordValidation.setForeground(Color.red);
         if (PasswordField1.getPassword().length == 0) {
             PasswordValidation.setText("Please fill the password field");
@@ -151,10 +203,10 @@ public class SignupForm extends JFrame {
 
         }
 
-        return Success;
+
     }
 
-    private boolean ConfirmPasswordErrorLabel(){
+    private void ValidateConfirmPassword() {
         ConfirmPassValidation.setForeground(Color.red);
         if (PasswordField2.getPassword().length == 0) {
             ConfirmPassValidation.setText("Please Confirm password ");
@@ -174,12 +226,9 @@ public class SignupForm extends JFrame {
             }
         }
 
-        return  Success;
     }
 
 
-
-    private String RegexEmail = "([a-z\\d\\.-]+)@([a-z\\d-]+)\\.([a-z]{2,3})(\\.[a-z]{2,3})?";
 
 
 
@@ -201,7 +250,7 @@ public class SignupForm extends JFrame {
         PasswordValidation.setText(null);
         ConfirmPassValidation.setText(null);
         InitialAmountValidation.setText(null);
-         Success = false;
+        Success = false;
     }
 
 
@@ -221,8 +270,7 @@ public class SignupForm extends JFrame {
         TextField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                String text1 = TextField1.getText();
-                NameErrorLabel();
+                ValidateName();
             }
         });
         //label2
@@ -233,32 +281,50 @@ public class SignupForm extends JFrame {
         TextField2 = new JTextField();
         TextField2.setBounds(40, 70, 200, 20);
 
+        //Address Validations
+        AddressValidation = new JLabel();
+        AddressValidation.setBounds(245, 70, 200, 20);
+        TextField2.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                ValidateAddress();
+            }
+        });
+
+
         //label3
-        label3 = new JLabel("PHONE NO: ", 10);
-        label3.setBounds(40, 90, 80, 20);
+        label3 = new JLabel("PHONE NO: ");
+        label3.setBounds(40, 90,80, 20);
 
         //TextField3
         TextField3 = new JTextField();
         TextField3.setBounds(40, 110, 200, 20);
 
-
-        //Phone Functionalities
-
+        //Phone Validations
+        PhoneValidation = new JLabel();
+        PhoneValidation.setBounds(245, 110, 160, 20);
         TextField3.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                PhoneErrorLabel();
+                ValidatePhone();
             }
         });
-
-        PhoneValidation = new JLabel();
-        PhoneValidation.setBounds(245, 110, 160, 20);
 
         //label4
         label4 = new JLabel("OCCUPATION: ");
         label4.setBounds(40, 130, 160, 20);
         TextField4 = new JTextField();
         TextField4.setBounds(40, 150, 200, 20);
+
+        //OccupationValidations
+        OccupationValidation = new JLabel();
+        OccupationValidation.setBounds(245, 150, 200, 20);
+        TextField4.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                ValidateOccupation();
+            }
+        });
 
 
         //label 5
@@ -268,6 +334,16 @@ public class SignupForm extends JFrame {
         //Date
         Date = new JDateChooser();
         Date.setBounds(40, 189, 200, 20);
+
+        //DateValidations
+        DateValidation = new JLabel();
+        DateValidation.setBounds(300, 189, 200, 20);
+//        Date.addKeyListener(new KeyAdapter() {
+//            @Override
+//            public void keyReleased(KeyEvent e) {
+//                ValidateDate();
+//            }
+//        });
 
 
         //label6
@@ -281,7 +357,7 @@ public class SignupForm extends JFrame {
         TextField6.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                PincodeErrorLabel();
+                ValidatePinCode();
             }
         });
 
@@ -303,7 +379,7 @@ public class SignupForm extends JFrame {
         TextField7.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                   EmailErrorLabel();
+                ValidateEmail();
             }
         });
 
@@ -313,6 +389,7 @@ public class SignupForm extends JFrame {
 
         //TextField8
         TextField8 = new JTextField();
+        TextField8.setText("0");
         TextField8.setBounds(40, 315, 200, 20);
 
         //InitialAmountValidation label
@@ -322,22 +399,7 @@ public class SignupForm extends JFrame {
         TextField8.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-
-
-//                if (TextField8.getText().isEmpty()) {
-//                    InitialAmountValidation.setText("Please Enter the Amount");
-//                    Success = false;
-//                } else if (!(TextField8.getText().matches("^[0-9]*$"))) {
-//                    InitialAmountValidation.setText("Please fill Digits only");
-//                    Success = false;
-//                } else if (Integer.parseInt(TextField8.getText()) < 5000) {
-//                    InitialAmountValidation.setText("Enter the Amount greater than 5000");
-//                    Success = false;
-//                } else {
-//                    InitialAmountValidation.setText("");
-//
-//                }
-
+                ValidateInitialAmount();
             }
         });
         //label 9
@@ -356,7 +418,7 @@ public class SignupForm extends JFrame {
         PasswordField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                PasswordErrorLabel();
+                ValidatePassword();
 
             }
         });
@@ -373,7 +435,7 @@ public class SignupForm extends JFrame {
         PasswordField2.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                ConfirmPasswordErrorLabel();
+                ValidateConfirmPassword();
             }
         });
 
@@ -385,20 +447,19 @@ public class SignupForm extends JFrame {
         SubmitButton = new JButton("SUBMIT");
         SubmitButton.setBounds(40, 430, 100, 20);
         SubmitButton.setBackground(Color.green);
-        SubmitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                   CheckValidations();
-                  if(isEmptyCheck()){
-                    System.out.println("NotEmpty");
-                }
-                else{
-                    System.out.println("Empty");
-                }
+        SubmitButton.addActionListener(e -> {
 
 
+            SignUpFormValidations();
+            CheckTextBoxEmpty();
+            if (Success) {
+                System.out.println("Success");
+                System.out.println(Date.getDate());
+            } else {
+                System.out.println("Not a Success");
             }
+
+
         });
 
 
@@ -406,20 +467,17 @@ public class SignupForm extends JFrame {
         ResetButton = new JButton("RESET");
         ResetButton.setBounds(150, 430, 100, 20);
         ResetButton.setBackground(Color.ORANGE);
-        ResetButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ResetAll();
-            }
-        });
+        ResetButton.addActionListener(e -> ResetAll());
         add(label1);
         add(TextField1);
         add(NameValidation);
         add(label2);
         add(TextField2);
+        add(AddressValidation);
         add(label3);
         add(TextField3);
         add(label4);
+        add(OccupationValidation);
         add(TextField4);
         add(PhoneValidation);
         add(label5);
@@ -432,6 +490,7 @@ public class SignupForm extends JFrame {
         add(EmailIDValidation);
         add(label8);
         add(TextField8);
+        add(InitialAmountValidation);
         add(label9);
         add(PasswordField1);
         add(PasswordValidation);
