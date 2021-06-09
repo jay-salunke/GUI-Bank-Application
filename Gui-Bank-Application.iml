@@ -28,7 +28,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../email_lib.zip!/" />
+          <root url="jar://$MODULE_DIR$/../javax.mail.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
