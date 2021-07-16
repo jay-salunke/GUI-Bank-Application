@@ -101,11 +101,7 @@ public class OtpForm extends JFrame {
         try {
             if (Integer.parseInt(otptextfield.getText()) == Otp && (!otpexpiry) && validation) {
                 JOptionPane.showMessageDialog(null, "Password Changes Successfully");
-                try {
 
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
                 try {
                     byte[] salt = new byte[20];
                     SecureRandom random = new SecureRandom();
