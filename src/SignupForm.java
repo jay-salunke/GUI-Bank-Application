@@ -1,5 +1,6 @@
 
 import com.toedter.calendar.JDateChooser;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -44,6 +45,7 @@ public class SignupForm extends JFrame {
     private JDateChooser Date;
     private boolean Success = true;
     private String RegexEmail = "([a-z\\d\\.-]+)@([a-z\\d-]+)\\.([a-z]{2,3})(\\.[a-z]{2,3})?";
+
     public void CheckTextBoxEmpty() {
         if (TextField1.getText().isEmpty()) Success = false;
         if (TextField2.getText().isEmpty()) Success = false;
@@ -51,8 +53,8 @@ public class SignupForm extends JFrame {
         if (TextField4.getText().isEmpty()) Success = false;
         if (TextField6.getText().isEmpty()) Success = false;
         if (TextField7.getText().isEmpty()) Success = false;
-        if(!TextField7.getText().matches(RegexEmail))Success = false;
-        if (TextField8.getText() == "0")Success = false;
+        if (!TextField7.getText().matches(RegexEmail)) Success = false;
+        if (TextField8.getText() == "0") Success = false;
         if (PasswordField1.getPassword().length == 0) Success = false;
         if (PasswordField2.getPassword().length == 0) Success = false;
     }
@@ -170,21 +172,18 @@ public class SignupForm extends JFrame {
         InitialAmountValidation.setForeground(Color.red);
         int Amount = Integer.parseInt(TextField8.getText());
 
-          if(Amount ==0){
+        if (Amount == 0) {
             InitialAmountValidation.setText("Enter the Amount");
-            Success =  false;
-        }
-         else if(Amount <0){
-             InitialAmountValidation.setText("Please enter correct Amount");
-             Success = false;
-         }
-         else if(Amount<1500){
+            Success = false;
+        } else if (Amount < 0) {
+            InitialAmountValidation.setText("Please enter correct Amount");
+            Success = false;
+        } else if (Amount < 1500) {
             InitialAmountValidation.setText("Please enter minimum 1500/- cash");
-             Success = false;
-        }
-        else{
+            Success = false;
+        } else {
             InitialAmountValidation.setText("");
-             Success = true;
+            Success = true;
         }
 
 
@@ -227,9 +226,6 @@ public class SignupForm extends JFrame {
         }
 
     }
-
-
-
 
 
     public void ResetAll() {
@@ -294,7 +290,7 @@ public class SignupForm extends JFrame {
 
         //label3
         label3 = new JLabel("PHONE NO: ");
-        label3.setBounds(40, 90,80, 20);
+        label3.setBounds(40, 90, 80, 20);
 
         //TextField3
         TextField3 = new JTextField();
