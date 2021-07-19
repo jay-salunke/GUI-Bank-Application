@@ -125,25 +125,6 @@ public class Decrypter {
         return diff == 0;
     }
 
-    public static void main(String[] args) throws InvalidKeySpecException {
-          int i=0;
-        String pass1 = Decrypter.createHash("Password");
-        System.out.println(pass1);
-        char[] password = {'P','a','s','s','w','o','r','d'};
 
-        String[] s1 = pass1.split(":");
-
-        for (String t1 : s1) {
-            System.out.println(t1);
-        }
-
-        if(Decrypter.ValidatePassword(pass1,password)){
-            System.out.println("True");
-        }
-        else{
-            System.out.println("false");
-        }
-
-    }
 
 }
