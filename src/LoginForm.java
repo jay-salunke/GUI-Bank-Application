@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.security.SecureRandom;
+import java.util.Base64;
 
 public class LoginForm extends JDBCConnection {
     private JFrame LoginFrame;
@@ -13,16 +15,22 @@ public class LoginForm extends JDBCConnection {
     private JLabel LoginLabel1;
     private JLabel LoginLabel2;
     private JTextField LoginText1;
-    private JTextField LoginText2;
+    private JPasswordField LoginText2;
     private JCheckBox LoginRemCheck;
     private JButton ForgotPassword;
     private JButton SignUpAccount;
     private JPanel panel;
+    private String hashpassword;
 
+    private void CheckPassword(){
+
+
+
+    }
     private void LoginCheck(String email, String pass) {
         boolean giveAccess = false;
         if (email.isEmpty() || pass.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Field cannot be empty....");
+            JOptionPane.showMessageDialog(null, "Field cannot be empty");
         } else {
 
             try {
@@ -32,14 +40,14 @@ public class LoginForm extends JDBCConnection {
                 Class.forName(Driver);
                 Connection con = DriverManager.getConnection(DB_URL, DB_Username, DB_pass);
                 Statement stmt = con.createStatement();
-                String query = "SELECT Name,EmailID,Password FROM `usersinfo` WHERE `EmailID` ='" + email + "' AND `Password` ='" + pass + "'";
+                String query = "SELECT Name,EmailID,Password FROM `usersinfo` WHERE `EmailID` ='" + email +"'";
                 ResultSet rs = stmt.executeQuery(query);
                 while (rs.next()) {
                     DB_Name = rs.getString("Name");
                     DB_EmailID = rs.getString("EmailID");
                     DB_Password = rs.getString("Password");
                 }
-                if (DB_EmailID.equals(email) && DB_Password.equals(pass)) {
+                if (DB_EmailID.equals(email) && Decrypter.ValidatePassword(DB_Password,LoginText2.getPassword())) {
                     JOptionPane.showMessageDialog(null, "Dear" + DB_Name + " you have login successfully in your account");
                     giveAccess = true;
 
@@ -81,7 +89,7 @@ public class LoginForm extends JDBCConnection {
         LoginLabel2 = new JLabel("Password: ");
         LoginLabel2.setBounds(70, 100, 100, 20);
         //TextBox2 (Password)
-        LoginText2 = new JTextField();
+        LoginText2 = new JPasswordField();
         LoginText2.setBounds(70, 120, 220, 25);
 
         //Login Button

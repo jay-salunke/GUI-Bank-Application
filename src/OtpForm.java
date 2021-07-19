@@ -103,17 +103,7 @@ public class OtpForm extends JFrame {
                 JOptionPane.showMessageDialog(null, "Password Changes Successfully");
 
                 try {
-                    byte[] salt = new byte[20];
-                    SecureRandom random = new SecureRandom();
-                    random.nextBytes(salt);
-                    KeySpec spec = new PBEKeySpec(passwordField.getPassword(), salt, 65536, 128);
-                    SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-                    byte[] hash = f.generateSecret(spec).getEncoded();
-                    StringBuilder sb = new StringBuilder();
-                    for (byte b : hash) {
-                        sb.append(String.format("%02x", b));
-                    }
-                    String hashpassword = sb.toString();
+                    String hashpassword = Decrypter.createHash(passwordField.getPassword()).toString();
                     JDBCConnection con = new JDBCConnection();
                     Class.forName(con.Driver);
                     Connection connection = DriverManager.getConnection(con.DB_URL, con.DB_Username, con.DB_pass);
@@ -125,8 +115,6 @@ public class OtpForm extends JFrame {
                     new LoginForm();
                 } catch (SQLException | ClassNotFoundException ex) {
                     ex.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
                 } catch (InvalidKeySpecException e) {
                     e.printStackTrace();
                 }

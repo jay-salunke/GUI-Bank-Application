@@ -13,9 +13,9 @@ public class Mail {
        props.put("mail.smtp.port","587");
 
        final String  EmailID ="EmailID";
-       final String Pass = "EmailPassword";
+       final String Pass = "EmailID Pass";
        final String Subject = "Mail Test";
-       final String Text="<h4>This is Mail Test send through javax.MailAPI</h4><br/><h4> your OTP is:"+Getotp+" <h4> imp note: Don't share with anyone";
+       final String Text="<h4>This is to inform you that you have request to change the password</h4><br/><h4> your OTP is:"+Getotp+" <h4>Note: Please Don't Share with Anyone this OTP</h4> ";
      Session s = Session.getInstance(props, new Authenticator() {
          @Override
          protected PasswordAuthentication getPasswordAuthentication() {

@@ -44,9 +44,9 @@ public class ForgotPassword extends JFrame {
                         }
                     });
                     t1.start();
+                    JOptionPane.showMessageDialog(null,"Check your Email for One time password");
                     setVisible(false);
                     new OtpForm(getEmail, getOtp);
-
                 }
             }
         });
